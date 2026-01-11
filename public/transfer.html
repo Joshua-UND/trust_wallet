@@ -15,7 +15,7 @@
 <script>
 window.addEventListener('DOMContentLoaded', async () => {
   try {
-    const response = await fetch('https://walletsite1.onrender.com/check-session', {
+    const response = await fetch('https://wallet-trustbank.onrender.com/check-session', {
       method: 'GET',
       credentials: 'include' // important to send cookies
     });
@@ -939,7 +939,7 @@ linear-gradient(90deg, #0046be, #132e6c);
     `;
 
     try {
-      const res = await fetch('https://walletsite1.onrender.com/get-transfers');
+      const res = await fetch('https://wallet-trustbank.onrender.com/get-transfers');
       const transfers = await res.json();
 
       transfers.forEach((tx, index) => {
@@ -1054,7 +1054,7 @@ linear-gradient(90deg, #0046be, #132e6c);
     };
 
     try {
-      await fetch('https://walletsite1.onrender.com/save-transfer', {
+      await fetch('https://wallet-trustbank.onrender.com/save-transfer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(transferData)
@@ -1115,7 +1115,7 @@ document.getElementById('routingNumber')?.addEventListener('input', e => {
 <script>
   async function loadBalance() {
     try {
-      const res = await fetch('https://walletsite1.onrender.com/balance', {
+      const res = await fetch('https://wallet-trustbank.onrender.com/balance', {
         credentials: 'include'
       });
       const data = await res.json();
