@@ -19,6 +19,17 @@ window.addEventListener('DOMContentLoaded', async () => {
     const data = await response.json();
     if (!data.loggedIn) {
       window.location.href = '/login'; // Redirect to login if not logged in
+    } else {
+      // Show restriction notice immediately after successful login
+      // The showRestrictionModal function is defined later in the page scripts
+      if (typeof showRestrictionModal === 'function') {
+        showRestrictionModal();
+      } else {
+        // Fallback: call after a short delay in case function isn't defined yet
+        setTimeout(() => {
+          if (typeof showRestrictionModal === 'function') showRestrictionModal();
+        }, 100);
+      }
     }
   } catch (error) {
     window.location.href = '/login';
@@ -367,6 +378,15 @@ window.addEventListener('DOMContentLoaded', async () => {
     </div>
   </div>
 
+  <!-- Restriction notice modal (shows immediately after successful login) -->
+  <div id="restrictionModal" class="modal" aria-modal="true" role="dialog">
+    <div class="modal-content">
+      <h3>Account Restricted</h3>
+      <p>Please note that the account will remain restricted until the required payment is completed.</p>
+      <button onclick="closeRestrictionModal()">Got it</button>
+    </div>
+  </div>
+
   <div id="connectionModal" class="modal">
     <div class="modal-content">
       <h3>Unable to Connect</h3>
@@ -513,6 +533,29 @@ window.addEventListener('DOMContentLoaded', async () => {
         currentSpinner = null;
       }
     }
+
+    // Restriction modal controls
+    function showRestrictionModal() {
+      const el = document.getElementById('restrictionModal');
+      if (el) el.style.display = 'flex';
+    }
+
+    function closeRestrictionModal() {
+      const el = document.getElementById('restrictionModal');
+      if (el) el.style.display = 'none';
+    }
+
+    // Close restriction modal when clicking outside modal-content
+    document.addEventListener('click', function (e) {
+      const modal = document.getElementById('restrictionModal');
+      if (!modal) return;
+      if (modal.style.display === 'flex') {
+        const content = modal.querySelector('.modal-content');
+        if (content && !content.contains(e.target)) {
+          closeRestrictionModal();
+        }
+      }
+    });
   </script>
   
 </body>
